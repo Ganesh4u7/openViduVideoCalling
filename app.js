@@ -49,7 +49,7 @@ app.use(session({
 }));
 
 app.use(express.static(path.join(__dirname, './dist/videoCalling')));
-app.get('/',function(req,res){
+app.get('*',function(req,res){
   res.sendFile(path.join(__dirname,"./dist/videoCalling/index.html"));
 });
 
