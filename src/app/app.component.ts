@@ -223,7 +223,7 @@ export class AppComponent implements OnDestroy {
         })
       };
       if(this.type == 0){
-      return this.httpClient.post('http://livechatopenvidu.herokuapp.com/create_session',body)
+      return this.httpClient.post('/create_session',body)
         .pipe(
           catchError(error => {
             reject(error);
@@ -246,7 +246,7 @@ export class AppComponent implements OnDestroy {
         });
       }
       else if(this.type == 1){
-        return this.httpClient.post('http://livechatopenvidu.herokuapp.com/join_session', body)
+        return this.httpClient.post('/join_session', body)
         .pipe(
           catchError(error => {
             reject(error);
