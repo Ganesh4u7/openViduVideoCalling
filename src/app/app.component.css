@@ -1,0 +1,11 @@
+.stream-container {
+	padding: 0;
+}
+.rotate-icon {
+	 transform: rotate(180deg);
+}
+.video {position: relative; width: 500px;}
+.video img {display: block;}
+.video .buttons {position: absolute; z-index: 1; width: 100%; text-align: center; display: none;}
+.video:hover .buttons {display: block;}
+

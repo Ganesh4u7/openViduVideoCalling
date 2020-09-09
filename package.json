@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node server.js https://ec2-18-220-241-128.us-east-2.compute.amazonaws.com MY_SECRET",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -18,10 +18,21 @@
     "@angular/forms": "~9.1.11",
     "@angular/platform-browser": "~9.1.11",
     "@angular/platform-browser-dynamic": "~9.1.11",
+    "@fortawesome/fontawesome-free": "^5.13.0",
     "@angular/router": "~9.1.11",
+    "body-parser": "^1.19.0",
+    "bootstrap": "^4.4.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.10.2",
+    "nodemon": "^2.0.4",
+    "openvidu-browser": "2.15.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
-    "zone.js": "~0.10.2"
+    "zone.js": "~0.10.2",
+    "express-session": "1.16.1",
+    "openvidu-node-client": "2.15.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.901.8",
