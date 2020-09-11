@@ -1,7 +1,7 @@
 <div id="main-container" class="container">
   
 
-	<div *ngIf="!session" id="join">
+	<div *ngIf="!session || login != true" id="join">
 	
     <div id="join-dialog" class="jumbotron vertical-center">
       <div *ngIf="type == null">
@@ -63,7 +63,9 @@
 				</p>
 				<p class="text-center">
 					<input class="btn btn-lg btn-success" type="submit" name="commit" value="Join!">
-                </p>
+				</p>
+				<p *ngIf="login == false" style="color: red;">
+					Session Name doesn't exist</p>
         
 			</form>
        </div>
@@ -80,12 +82,14 @@
 			<div class="video">
 				<user-video [streamManager]="mainStreamManager"></user-video>
 				<div class="buttons">
-				  <button type="button" (click)="audioOff()" *ngIf="audioToggle == false"class="btn btn-primary"><i class="fas fa-volume-down"></i></button>
-				  <button type="button" (click)="audioOff()" *ngIf="audioToggle == true"class="btn btn-primary"><i class="fas fa-volume-mute"></i></button>
+				  <button type="button" (click)="audioOff()" *ngIf="audioToggle == false"class="btn btn-primary"><i class="fas fa-microphone"></i></button>
+				  <button type="button" (click)="audioOff()" *ngIf="audioToggle == true"class="btn btn-primary"><i class="fas fa-microphone-slash"></i></button>
 				  <button type="button" (click)="videoOff()" *ngIf="videoToggle == false" class="btn btn-primary"><i class="fas fa-video"></i></button>
 				  <button type="button" (click)="videoOff()" *ngIf="videoToggle == true" class="btn btn-primary"><i class="fas fa-video-slash"></i></button>
 				  <button type="button" (click)="screenShare()" *ngIf="screenShareToggle == true" class="btn btn-primary "><i class="far fa-share-square rotate-icon"></i></button>
 				  <button type="button" (click)="screenShare()" *ngIf="screenShareToggle == false" class="btn btn-primary"><i class="far fa-share-square"></i></button>
+				  <button type="button" (click)="recordingSessionOn()" *ngIf="toggleRec == false" class="btn btn-primary "><i class="fas fa-play-circle"></i></button>
+				  <button type="button" (click)="recordingSessionOff()" *ngIf="toggleRec == true" class="btn btn-primary"><i class="fas fa-pause-circle"></i></button>
 				</div>
 			  </div>
 		</div>

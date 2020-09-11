@@ -24,7 +24,7 @@ var recording;
 const router = require('express').Router();
 
 // Environment variable: URL where our OpenVidu server is listening
-var OPENVIDU_URL = "https://ec2-18-220-241-128.us-east-2.compute.amazonaws.com";
+var OPENVIDU_URL = "https://ec2-13-127-86-183.ap-south-1.compute.amazonaws.com";
 // Environment variable: secret shared with our OpenVidu server
 var OPENVIDU_SECRET = "MY_SECRET";
 
@@ -131,5 +131,36 @@ router.post('/join_session',(req,res)=>{
 
 
 });
+
+
+router.post('/api-sessions/recording',(req,res)=>{
+    if(req.body.record == true){
+       console.log('enterted');
+        var sessionId = mapSessions[req.body.session].sessionId;
+        console.log(sessionId);
+  
+        let recordOptions = {
+          outputMode: Recording.OutputMode.COMPOSED,
+          name: "MY_RECORDING_NAME",
+          hasAudio: true,     // Whether you want to start publishing with your audio unmuted or not
+          hasVideo: true     // Whether you want to start publishing with your video enabled or not
+            
+      };
+          // Starts recording
+          OV.startRecording(sessionId,recordOptions)
+            .then((response)=>{
+                recording=response;
+                console.log(response);
+                res.send({success:true});
+            })
+            .catch(error => console.error(error));
+  
+    }
+    else{
+        console.log(recording.id);
+          OV.stopRecording(recording.id)
+          .then(recordingStopped =>{  res.send({success:true,recording:"stopped"}) });
+    }
+  })
 
 module.exports = router;

@@ -12,7 +12,7 @@ import { catchError } from 'rxjs/operators';
 })
 export class AppComponent implements OnDestroy { 
 
-  OPENVIDU_SERVER_URL = 'https://ec2-18-220-241-128.us-east-2.compute.amazonaws.com';
+  OPENVIDU_SERVER_URL = 'https://ec2-13-127-86-183.ap-south-1.compute.amazonaws.com';
   OPENVIDU_SERVER_SECRET = 'MY_SECRET';
 
   // OpenVidu objects
@@ -32,6 +32,7 @@ export class AppComponent implements OnDestroy {
   videoToggle = true;
   screenShareToggle = true;
   audioToggle = true;
+  toggleRec = false;
 
   // Main video of the page, will be 'publisher' or one of the 'subscribers',
   // updated by click event in UserVideoComponent children
@@ -133,7 +134,7 @@ export class AppComponent implements OnDestroy {
 
     // Empty all properties...
     this.subscribers = [];
-    delete this.publisher;
+    delete this.publisher; 
     delete this.session;
     delete this.OV;
     this.generateParticipantInfo();
@@ -223,7 +224,7 @@ export class AppComponent implements OnDestroy {
         })
       };
       if(this.type == 0){
-      return this.httpClient.post('/create_session',body)
+      return this.httpClient.post('http://localhost:4300/create_session',body)
         .pipe(
           catchError(error => {
             reject(error);
@@ -246,18 +247,23 @@ export class AppComponent implements OnDestroy {
         });
       }
       else if(this.type == 1){
-        return this.httpClient.post('/join_session', body)
+        return this.httpClient.post('http://localhost:4300/join_session', body)
         .pipe(
           catchError(error => {
             reject(error);
             return observableThrowError(error);
           })
         )
-        .subscribe(response => {
-          console.log('_______');
-          console.log(response);
-          console.log('_______');
-          resolve(response[0]);
+        .subscribe((response:any) => {
+          let resData = response;
+          if(resData.status == true){
+            console.log('came here');
+            this.login = true;
+            resolve(response[0]);
+          }
+          else{ 
+            this.login = false;
+          }
         });
 
       } 
@@ -266,6 +272,7 @@ export class AppComponent implements OnDestroy {
 
   changeType(type){
     this.type = type;
+    this.login = null;
   }
 
    videoOff(){
@@ -336,41 +343,48 @@ export class AppComponent implements OnDestroy {
   
     
   
-      // console.log('hello');
-      // var sessionId = session.sessionId;
-      // console.log(sessionId);
+      console.log('hello');
+      var sessionId = this.mySessionId;
+      console.log(sessionId);
   
-      // httpPostRequest(
-      //   'api-sessions/recording',
-      //   {record:true,session:sessionId},
-      //   'Something went WRONG',
-      //   (response) => {
-      //     console.log(response);
-          
-      //   }
-      // );
+    
+      this.httpClient.post('http://localhost:4300/api-sessions/recording', {record:true,session:sessionId})
+        .pipe(
+          catchError(error => {
+            return observableThrowError(error);
+          })
+        )
+        .subscribe((response:any) => {
+          console.log(response);
+        if(this.toggleRec == true){
+          this.toggleRec =false;
+        }
+        else{
+          this.toggleRec = true
+        }
+        });
   
   }
    recordingSessionOff(){
   
-    // console.log('hello');
-    // var sessionId = session.sessionId;
-    // console.log(sessionId);
+    console.log('hello');
   
-    // httpPostRequest(
-    //   'api-sessions/recording',
-    //   {record:false},
-    //   'Something went WRONG',
-    //   (response) => {
-    //     console.log(response);
-    //     if(toggleRec == true){
-    //       toggleRec =false;
-    //     }
-    //     else{
-    //       toggleRec = true
-    //     }
-    //   }
-    // );
+    
+     this.httpClient.post('http://localhost:4300/api-sessions/recording', {record:false})
+        .pipe(
+          catchError(error => {
+            return observableThrowError(error);
+          })
+        )
+        .subscribe((response:any) => {
+          console.log(response);
+        if(this.toggleRec == true){
+          this.toggleRec =false;
+        }
+        else{
+          this.toggleRec = true
+        }
+        });
   
   }
 
